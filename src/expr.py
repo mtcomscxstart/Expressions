@@ -10,6 +10,8 @@ class Parser:
            '/' : (1,  True, operator.truediv),
            '%' : (1,  True,     operator.mod),
            '^' : (2, False,     operator.pow)}
+    un = {'+' : operator.pos,
+          '-' : operator.neg}
 
     def __init__(self, s):
         self.s = s
@@ -29,7 +31,10 @@ class Parser:
     def parseOperator(self, lv):
         if lv > self.maxLevel:
             return self.parseTerm()
+        op = self.next() if self.x in self.un else None
         e = self.parseOperator(lv + 1)
+        if not op is None:
+            return (self.un[op], [e])
         while self.isLevel(lv):
             op = self.next()
             if self.ops[op][1]:
@@ -45,12 +50,6 @@ class Parser:
             r = self.parseOperator(0)
             self.next()
             return r
-        elif self.x == '+':
-            self.next()
-            return self.parseTerm()
-        elif self.x == '-':
-            self.next()
-            return (operator.neg, [self.parseTerm()])
         elif self.x.isdigit():
             return int(self.next())
         else:
