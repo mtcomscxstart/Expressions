@@ -14,7 +14,7 @@ class Parser:
 
     def __init__(self, s):
         self.s = s
-        self.l = iter(re.compile('\w+|\d+|[-+*/%^]').findall(s) + ['\0'])
+        self.l = iter(re.compile('\w+|\d+|[-+*/%^()]').findall(s) + ['\0'])
         self.x = next(self.l)
 
     def isLevel(self, lv):
@@ -43,7 +43,7 @@ class Parser:
     def parseTerm(self):
         if self.x == '(':
             self.next()
-            self.next(self.parseOperator(0))
+            return self.next(self.parseOperator(0))
         elif self.x.isdigit():
             return int(self.next())
         else:
