@@ -37,7 +37,7 @@ class Parser:
         while self.isLevel(lv):
             op = self.next()
             e = (self.ops[op][2], [e, self.parseOperator(lv + self.ops[op][1])])
-            if self.ops[op][1]:
+            if not self.ops[op][1]:
                 break
         return e
 
