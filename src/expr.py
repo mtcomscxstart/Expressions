@@ -14,18 +14,17 @@ class Parser:
 
     def __init__(self, s):
         self.s = s
-        self.l = re.compile('\w+|\d+|[-+*/%^]').findall(s) + ['\0']
-        self.i = 0
-        self.x = self.l[0]
+        self.l = iter(re.compile('\w+|\d+|[-+*/%^]').findall(s) + ['\0'])
+        self.x = next(self.l)
 
     def isLevel(self, lv):
         op = self.x
         return (op in self.ops) and (self.ops[op][0] == lv)
 
     def next(self, v=None):
-        self.i += 1
-        self.x = self.l[self.i]
-        return self.l[self.i - 1] if v is None else v
+        r = self.x
+        self.x = next(self.l)
+        return r if v is None else v
 
     def parseOperator(self, lv):
         if lv > self.maxLevel:
