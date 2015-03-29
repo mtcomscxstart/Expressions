@@ -1,5 +1,4 @@
 import re
-import enum
 import operator
 
 class Parser:
