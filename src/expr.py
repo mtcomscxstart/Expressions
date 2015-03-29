@@ -56,6 +56,8 @@ def evm(e, m):
     def ev(e):
         if type(e) is int:
             return e
+        if type(e) is str:
+            return m[e]
         return e[0](*map(ev, e[1]))
     return ev(e)
 
