@@ -3,7 +3,7 @@ import enum
 import operator
 
 class Parser:
-    maxLevel = 2
+    maxLevel = 3
     ops = {'+' : (0,  True,     operator.add),
            '-' : (0,  True,     operator.sub),
            '*' : (1,  True,     operator.mul),
@@ -31,7 +31,7 @@ class Parser:
     def parseOperator(self, lv):
         if lv > self.maxLevel:
             return self.parseTerm()
-        op = self.next() if self.x in self.un else None
+        op = self.next() if self.x in self.un and lv == self.maxLevel else None
         e = self.parseOperator(lv + 1)
         if not op is None:
             return (self.un[op], [e])
