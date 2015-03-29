@@ -22,10 +22,10 @@ class Parser:
         op = self.x
         return (op in self.ops) and (self.ops[op][0] == lv)
 
-    def next(self):
+    def next(self, v=None):
         self.i += 1
         self.x = self.l[self.i]
-        return self.l[self.i - 1]
+        return self.l[self.i - 1] if v is None else v
 
     def parseOperator(self, lv):
         if lv > self.maxLevel:
@@ -44,9 +44,7 @@ class Parser:
     def parseTerm(self):
         if self.x == '(':
             self.next()
-            r = self.parseOperator(0)
-            self.next()
-            return r
+            self.next(self.parseOperator(0))
         elif self.x.isdigit():
             return int(self.next())
         else:
